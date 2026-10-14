@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#000000">
+
+    <TextView
+        android:id="@+id/tvHeartRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="心率: --"
+        android:textColor="#FF0000"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvBloodOxygen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="血氧: --"
+        android:textColor="#00FFFF"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="步数: --"
+        android:textColor="#00FF00"
+        android:textSize="24sp"/>
+
+</LinearLayout>
