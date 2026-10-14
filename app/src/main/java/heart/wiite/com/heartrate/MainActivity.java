@@ -1,6 +1,6 @@
 package heart.wiite.com.heartrate;
 
-import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,13 +8,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor heartRateSensor;
+    private Sensor bloodOxygenSensor; // 新增：血氧传感器
     private Sensor stepCounterSensor;
     
     private TextView tvHeartRate;
@@ -42,17 +42,20 @@ public class MainActivity extends Activity implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager != null) {
             heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+            // 厂家说血氧是 TYPE_HEART_BEAT
+            bloodOxygenSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_BEAT); 
             stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         }
 
         if (heartRateSensor == null) {
             tvHeartRate.setText("心率: 不支持");
         }
+        if (bloodOxygenSensor == null) {
+            tvBloodOxygen.setText("血氧: 不支持");
+        }
         if (stepCounterSensor == null) {
             tvSteps.setText("步数: 不支持");
         }
-        // 注意：标准安卓没有统一血氧传感器，需厂商SDK
-        tvBloodOxygen.setText("血氧: 需厂商SDK");
     }
 
     @Override
@@ -60,6 +63,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         super.onResume();
         if (heartRateSensor != null) {
             sensorManager.registerListener(this, heartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        // 注册血氧传感器
+        if (bloodOxygenSensor != null) {
+            sensorManager.registerListener(this, bloodOxygenSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
         if (stepCounterSensor != null) {
             sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -76,10 +83,20 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         if (event == null) return;
 
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+        int type = event.sensor.getType();
+        
+        // 心率
+        if (type == Sensor.TYPE_HEART_RATE) {
             int bpm = (int) event.values[0];
             tvHeartRate.setText("心率: " + bpm + " bpm");
-        } else if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+        } 
+        // 血氧（厂家说 TYPE_HEART_BEAT 就是血氧）
+        else if (type == Sensor.TYPE_HEART_BEAT) {
+            int spo2 = (int) event.values[0];
+            tvBloodOxygen.setText("血氧: " + spo2 + " %");
+        }
+        // 计步
+        else if (type == Sensor.TYPE_STEP_COUNTER) {
             int steps = (int) event.values[0];
             tvSteps.setText("步数: " + steps);
         }
