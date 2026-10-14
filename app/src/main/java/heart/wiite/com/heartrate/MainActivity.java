@@ -8,10 +8,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends Activity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor heartRateSensor;
