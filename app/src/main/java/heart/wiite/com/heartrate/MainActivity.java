@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tvSteps = findViewById(R.id.tvSteps);
 
         // 申请权限
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, "android.permission.BODY_SENSORS") != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.BODY_SENSORS,
-                    Manifest.permission.ACTIVITY_RECOGNITION
+                    "android.permission.BODY_SENSORS",
+                    "android.permission.ACTIVITY_RECOGNITION"
             }, 100);
         }
 
